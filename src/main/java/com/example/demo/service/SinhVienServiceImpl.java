@@ -24,7 +24,8 @@ public class SinhVienServiceImpl implements SinhVienService{
         return sinhVienRepository.save(sinhVien);
     }
 
-    @Retry(name="basic")
+//    @Retry(name="basic")
+    @RateLimiter(name="limitbasic",fallbackMethod = "HandleFallBack")
     @Override
     public ReponseTemplateVO findSinhVienWithKhoa(long id) {
         ReponseTemplateVO vo = new ReponseTemplateVO();
@@ -35,4 +36,7 @@ public class SinhVienServiceImpl implements SinhVienService{
         return vo;
     }
 
+    private ReponseTemplateVO HandleFallBack(long id, RequestNotPermitted rnp) {
+        return new ReponseTemplateVO();
+    }
 }
